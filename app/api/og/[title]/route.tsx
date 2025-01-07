@@ -3,13 +3,6 @@ import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
-const size = {
-  width: 1200,
-  height: 630,
-};
-
-export const contentType = "image/png";
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ title: string }> }
@@ -135,7 +128,8 @@ export async function GET(
       </div>
     ),
     {
-      ...size,
+      width: 1200,
+      height: 630,
       fonts: [
         {
           name: "DM Serif Display",
