@@ -3,8 +3,6 @@ import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
-// Image metadata
-export const alt = "Interno";
 export const size = {
   width: 1200,
   height: 630,
