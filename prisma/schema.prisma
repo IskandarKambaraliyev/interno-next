@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Testimonials {
+  id      String @id @default(cuid())
+  name    String
+  country String
+  message String
+  image   String
+}
+
+model Team {
+  id String @id @default(cuid())
+
+  // Personal Info
+  image         String
+  name          String
+  position      String
+  description   String
+  bio           String
+  functionality String
+
+  // Contact
+  email   String?
+  phone   String?
+  website String?
+
+  // Social Media
+  facebook  String?
+  twitter   String?
+  linkedin  String?
+  instagram String?
+
+  // Question & Answer
+  qa Json
+
+  // Skills
+  design     Int
+  management Int
+  client     Int
+}
+
+model Projects {
+  id String @id @default(cuid())
+
+  // Project Info
+  title       String
+  slug        String  @unique
+  client_name String
+  image       String
+  image_large String
+  head_image  String?
+  content     String
+  pinned      Boolean @default(false)
+
+  // Categories & Tags
+  categories ProjectCategories[] @relation("ProjectCategory")
+  tags       Tags[]              @relation("ProjectTag")
+
+  // Timestamps
+  createdAt DateTime @default(now())
+}
+
+model ProjectCategories {
+  id String @id @default(cuid())
+
+  // Category Info
+  title    String
+  slug     String     @unique
+  projects Projects[] @relation("ProjectCategory")
+}
+
+model Blogs {
+  id String @id @default(cuid())
+
+  // Blog Info
+  title      String
+  slug       String  @unique
+  content    String
+  image      String
+  head_image String?
+
+  // Categories & Tags
+  categories BlogCategories[] @relation("BlogCategory")
+  tags       Tags[]           @relation("BlogTag")
+
+  // Timestamps
+  createdAt DateTime @default(now())
+}
+
+model BlogCategories {
+  id String @id @default(cuid())
+
+  // Category Info
+  title String
+  slug  String  @unique
+  blogs Blogs[] @relation("BlogCategory")
+}
+
+model Tags {
+  id String @id @default(cuid())
+
+  // Tag Info
+  title    String
+  slug     String     @unique
+  Projects Projects[] @relation("ProjectTag")
+  Blogs    Blogs[]    @relation("BlogTag")
+}
+
+model Statistics {
+  id    String @id @default(cuid())
+  title String
+  value Int
+}
