@@ -25,27 +25,46 @@ const Hero = () => {
     offset: ["start 80px", "end end"],
   });
 
-  const windowWidth = window.innerWidth;
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: window.innerWidth,
+    height: Math.min(window.innerHeight, document.documentElement.clientHeight),
+  });
 
-  const windowHeight = Math.min(
-    window.innerHeight,
-    document.documentElement.clientHeight
-  );
-
-  const endWidth = Math.min(windowWidth - 32, 1200);
-  const endHeight = windowHeight - 80;
+  const endWidth = Math.min(windowDimensions.width - 32, 1200);
+  const endHeight = windowDimensions.height - 80;
 
   const width = useTransform(
     scrollYProgress,
     [0, 1],
-    [`${windowWidth}px`, `${endWidth}px`]
+    [`${windowDimensions.width}px`, `${endWidth}px`]
+  );
+
+  const height = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [`${endHeight}px`, `${endHeight}px`]
   );
 
   const borderRadius = useTransform(
     scrollYProgress,
     [0, 1],
-    ["0px", `${windowWidth < 768 ? 40 : 80}px`]
+    ["0px", `${windowDimensions.width < 768 ? 40 : 80}px`]
   );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowDimensions({
+        width: document.documentElement.clientWidth,
+        height: Math.min(
+          window.innerHeight,
+          document.documentElement.clientHeight
+        ),
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="relative w-full min-h-[120vh]" ref={targetRef}>
@@ -58,8 +77,8 @@ const Hero = () => {
           backgroundPosition: "bottom",
           backgroundRepeat: "no-repeat",
           width,
-          borderRadius: borderRadius,
-          minHeight: endHeight,
+          borderRadius,
+          minHeight: height,
         }}
       >
         <div className="container !max-w-[calc(1200px-2rem)] flex flex-col justify-center gap-4 md:gap-5">
