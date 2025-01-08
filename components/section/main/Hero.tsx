@@ -26,7 +26,14 @@ const Hero = () => {
   });
 
   const windowWidth = window.innerWidth;
+
+  const windowHeight = Math.min(
+    window.innerHeight,
+    document.documentElement.clientHeight
+  );
+
   const endWidth = Math.min(windowWidth - 32, 1200);
+  const endHeight = windowHeight - 80;
 
   const width = useTransform(
     scrollYProgress,
@@ -43,7 +50,7 @@ const Hero = () => {
   return (
     <div className="relative w-full min-h-[120vh]" ref={targetRef}>
       <motion.div
-        className="min-h-[calc(100vh-5rem)] sticky top-20 mx-auto overflow-hidden py-8 flex-center"
+        className="sticky top-20 mx-auto overflow-hidden py-8 flex-center"
         style={{
           backgroundImage:
             "linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1)),url(https://i.ibb.co/f4CBk6t/hero.png)",
@@ -52,6 +59,7 @@ const Hero = () => {
           backgroundRepeat: "no-repeat",
           width,
           borderRadius: borderRadius,
+          minHeight: endHeight,
         }}
       >
         <div className="container !max-w-[calc(1200px-2rem)] flex flex-col justify-center gap-4 md:gap-5">
